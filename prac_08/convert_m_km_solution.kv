@@ -1,0 +1,29 @@
+BoxLayout:
+    orientation: 'vertical'  # Main layout orientation set to vertical
+
+    BoxLayout:  # Inner layout for input and buttons
+        orientation: 'horizontal'  # Set to horizontal layout for side-by-side elements
+
+        TextInput:  # Text input for user to enter miles
+            id: input_miles  # Unique ID for accessing this widget in the Python code
+            text: '34'  # Default text value
+            font_size: 48  # Font size for the input text
+            on_text: app.handle_calculate()  # Trigger calculation when text changes
+
+        BoxLayout:  # Layout for increment/decrement buttons
+            orientation: 'vertical'  # Set to vertical orientation for stacking buttons
+            size_hint_x: 0.25  # Set width to a quarter of the parent width
+
+            Button:  # Button to increment mile input
+                text: 'Up'  # Button label
+                on_press: app.handle_increment(1)  # Call increment function on press
+
+            Button:  # Button to decrement mile input
+                text: 'Down'  # Button label
+                on_press: app.handle_increment(-1)  # Call decrement function on press
+
+    Label:  # Label to display the output in kilometers
+        id: output_label  # Unique ID for accessing this widget in the Python code
+        font_size: 48  # Font size for the label text
+        text: '0.0'  # Default text value for output
+        color: (1, 1, 0, 1)  # Set text color to yellow (RGBA format)

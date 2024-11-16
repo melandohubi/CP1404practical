@@ -1,0 +1,19 @@
+BoxLayout:
+    orientation: 'vertical'  # Main layout orientation set to vertical
+
+    Button:  # Button for clearing the input
+        text: 'Clear'  # Label for the button
+        on_press: app.handle_clear()  # Call the clear function when pressed
+
+    TextInput:  # Text input for user to enter their name
+        id: input_name  # Unique ID for accessing this widget in the Python code
+        text: ''  # Default text value is empty
+
+    Button:  # Button to trigger the greeting
+        text: 'Greet'  # Label for the button
+        on_press: app.handle_greet()  # Call the greet function when pressed
+
+    Label:  # Label to display the output message
+        id: output_label  # Unique ID for accessing this widget in the Python code
+        text: 'Enter your name'  # Default text prompting user action
+        color: (1, 1, 0, 1)  # Set text color to yellow (RGBA format)

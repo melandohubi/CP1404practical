@@ -1,0 +1,12 @@
+BoxLayout:
+    orientation: 'vertical'  # Main layout orientation is vertical
+
+    BoxLayout:  # Inner layout for entries
+        orientation: 'vertical'  # Set to vertical orientation to stack labels
+        id: entries_box  # Unique ID to access this layout in the Python code
+        # This layout will be populated with Label widgets in app code
+        # Additional labels will be dynamically added based on user inputs or data
+
+    Label:  # Label to provide a title or description for the list
+        size_hint_y: 0.1  # Set height to occupy 10% of the parent layout's height
+        text: "List of Names"  # Text displayed in the label
