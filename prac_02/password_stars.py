@@ -1,3 +1,42 @@
+FUNCTION get_password()
+    DISPLAY "Enter your password: "
+    READ password
+    RETURN password
+END FUNCTION
+
+
+FUNCTION print_asterisks(password)
+    length ← LENGTH OF password
+    FOR i FROM 1 TO length DO
+        DISPLAY "*" WITHOUT NEW LINE
+    END FOR
+    DISPLAY NEW LINE
+END FUNCTION
+
+
+FUNCTION main()
+    DISPLAY "Enter your username: "
+    READ username
+
+    password ← CALL get_password()
+
+    IF password == "secret" THEN
+        DISPLAY "Welcome, " + username + "!"
+    ELSE
+        DISPLAY "Invalid password."
+    END IF
+
+    CALL print_asterisks(password)
+END FUNCTION
+
+
+IF program is being run directly THEN
+    CALL main()
+END IF
+
+
+
+
 def get_password():
     """Function to get the password from the user."""
     return input("Enter your password: ")
