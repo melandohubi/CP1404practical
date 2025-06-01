@@ -1,4 +1,4 @@
-FUNCTION get_password()
+"""FUNCTION get_password()
     DISPLAY "Enter your password: "
     READ password
     RETURN password
@@ -33,7 +33,7 @@ END FUNCTION
 IF program is being run directly THEN
     CALL main()
 END IF
-
+"""
 
 
 
