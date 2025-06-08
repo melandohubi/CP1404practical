@@ -1,25 +1,55 @@
-"""1. When will a ValueError occur?
-A ValueError will occur in the following situations:
-If the user inputs a value for either the numerator or denominator that cannot be converted to an integer. For example:
-Entering a non-numeric string (e.g., "abc").
-Entering a floating-point number (e.g., "3.14") since int() cannot convert it directly without raising an error.
-2. When will a ZeroDivisionError occur?
-A ZeroDivisionError will occur when the user inputs 0 as the denominator. In mathematical terms, division by zero is undefined, and Python raises this error to indicate that the operation cannot be performed.
-3. Could you change the code to avoid the possibility of a ZeroDivisionError?
-Yes, we can modify the code to check if the denominator is zero before performing the division. Here’s how you can do it:"""
+"""START
 
+DISPLAY "Enter the numerator: "
+INPUT numerator_string
+
+DISPLAY "Enter the denominator: "
+INPUT denominator_string
+
+TRY
+    SET numerator ← CONVERT numerator_string TO integer
+    SET denominator ← CONVERT denominator_string TO integer
+
+    IF denominator = 0 THEN
+        DISPLAY "Cannot divide by zero!"
+    ELSE
+        SET fraction ← numerator ÷ denominator
+        DISPLAY fraction
+    ENDIF
+
+CATCH ValueError
+    DISPLAY "Numerator and denominator must be valid integers!"
+
+ENDTRY
+
+DISPLAY "Finished."
+
+END
+"""
+
+
+"""
+CP1404/CP5632 - Practical
+Answer the following questions:
+1. When will a ValueError occur?
+   - A ValueError occurs when the input is not a valid integer (e.g., letters or special characters).
+2. When will a ZeroDivisionError occur?
+   - A ZeroDivisionError occurs when the denominator entered is 0.
+3. Could you change the code to avoid the possibility of a ZeroDivisionError?
+   - Yes, by checking if the denominator is 0 before performing the division.
+"""
 
 try:
     numerator = int(input("Enter the numerator: "))
     denominator = int(input("Enter the denominator: "))
 
     if denominator == 0:
-        raise ZeroDivisionError
+        print("Cannot divide by zero!")
+    else:
+        fraction = numerator / denominator
+        print(fraction)
 
-    fraction = numerator / denominator
-    print(f"Result: {fraction}")
 except ValueError:
-    print("Numerator and denominator must be valid numbers!")
-except ZeroDivisionError:
-    print("Cannot divide by zero!")
+    print("Numerator and denominator must be valid integers!")
+
 print("Finished.")
