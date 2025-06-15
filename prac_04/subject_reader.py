@@ -1,3 +1,45 @@
+"""BEGIN
+
+    CONSTANT FILENAME = "subject_data.txt"
+
+    FUNCTION main
+        SET data TO CALL load_data()
+        DISPLAY "Subject Data:"
+
+        FOR EACH subject_info IN data DO
+            SET subject TO subject_info[0]
+            SET lecturer TO subject_info[1]
+            SET students TO subject_info[2]
+
+            DISPLAY subject + " is taught by " + lecturer + " and has " + students + " students"
+        END FOR
+    END FUNCTION
+
+
+    FUNCTION load_data
+        INITIALIZE subject_list AS empty list
+
+        OPEN FILENAME FOR reading AND STORE AS input_file
+
+        FOR EACH line IN input_file DO
+            REMOVE newline character from line
+            SPLIT line BY ',' INTO parts
+
+            SET parts[2] TO INTEGER VALUE OF parts[2]
+
+            APPEND parts TO subject_list
+        END FOR
+
+        CLOSE input_file
+
+        RETURN subject_list
+    END FUNCTION
+
+    CALL main
+
+END
+"""
+
 """
 CP1404/CP5632 Practical
 Data file -> lists program
@@ -5,30 +47,25 @@ Data file -> lists program
 
 FILENAME = "subject_data.txt"
 
+
 def main():
     data = load_data()
-    display_subject_details(data)
+    print("Subject Data:")
+    for subject_info in data:
+        subject, lecturer, students = subject_info
+        print(f"{subject} is taught by {lecturer} and has {students} students")
+
 
 def load_data():
     """Read data from file formatted like: subject,lecturer,number of students."""
-    input_file = open(FILENAME)
-    subject_data = []  # List to store the nested lists
+    subject_list = []
+    with open(FILENAME) as input_file:
+        for line in input_file:
+            line = line.strip()
+            parts = line.split(',')
+            parts[2] = int(parts[2])  # Convert student count to int
+            subject_list.append(parts)
+    return subject_list
 
-    for line in input_file:
-        line = line.strip()  # Remove the \n
-        parts = line.split(',')  # Separate the data into its parts
-        parts[2] = int(parts[2])  # Convert the number of students to an integer
-        subject_data.append(parts)  # Append the list of parts to the main list
-
-    input_file.close()
-    return subject_data  # Return the nested list
-
-def display_subject_details(data):
-    """Display details for each subject."""
-    for subject in data:
-        subject_code = subject[0]
-        lecturer = subject[1]
-        student_count = subject[2]
-        print(f"{subject_code} is taught by {lecturer} and has {student_count} students")
 
 main()
