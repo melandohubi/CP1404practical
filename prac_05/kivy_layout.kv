@@ -1,18 +1,23 @@
-# This is a Kv file.
-# It contains the declarations of the widgets that will be displayed.
+# This is my Kv file for the Kivy app interface.
+
 BoxLayout:
-    orientation: 'vertical'
+    orientation: 'vertical'  # Stack widgets from top to bottom
+
     Label:
-        text: app.status_text
+        text: app.status_text  # Displays a dynamic message from the app
         font_size: 60
-        size_hint_y: 0.2
+        size_hint_y: 0.2  # Takes 20% of vertical space
+
     BoxLayout:
-        orientation: 'horizontal'
+        orientation: 'horizontal'  # Buttons go side by side
+
         Button:
             text: "Up"
-            on_press: app.handle_press(1)
+            on_press: app.handle_press(1)  # Calls method in app with +1
+
         Button:
             text: "Down"
-            on_press: app.handle_press(-1)
+            on_press: app.handle_press(-1)  # Calls method in app with -1
+
     BoxLayout:
-        id: names_box
+        id: names_box  # I'll use this box to add new widgets dynamically
