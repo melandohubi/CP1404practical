@@ -1,37 +1,59 @@
-from operator import itemgetter
+"""Start
 
-# Function to count word occurrences
-def count_words(text):
-    words = text.split()
-    word_count = {}
+Prompt user: "Text: "
+Read text_input
 
-    # Count occurrences of each word
-    for word in words:
-        word = word.lower()  # Consider case insensitivity
-        if word in word_count:
-            word_count[word] += 1
-        else:
-            word_count[word] = 1
+Convert text_input to lowercase
+Split text_input into a list of words and store in words_list
 
-    return word_count
+Create an empty dictionary called word_to_count
 
-# Main program
-def main():
-    text = input("Text: ")
-    word_count = count_words(text)
+FOR EACH word IN words_list
+    IF word IN word_to_count THEN
+        Increment word_to_count[word] by 1
+    ELSE
+        Set word_to_count[word] to 1
+    END IF
+END FOR
 
-    # Sort the dictionary by values (word counts)
-    sorted_word_count = sorted(word_count.items(), key=itemgetter(1), reverse=True)
+Set max_word_length to 0
 
-    # Calculate the maximum width for words and counts
-    word_width = max(len(word) for word, _ in sorted_word_count)
-    count_width = max(len(str(count)) for _, count in sorted_word_count)
+FOR EACH word IN word_to_count
+    IF length of word > max_word_length THEN
+        Set max_word_length to length of word
+    END IF
+END FOR
 
-    # Print the word counts aligned
-    print("\nWord Counts:")
-    for word, count in sorted_word_count:
-        print(f"{word:<{word_width}} : {count:{count_width}}")
+FOR EACH word IN word_to_count sorted alphabetically
+    Display word, formatted with width of max_word_length, followed by " : " and word_to_count[word]
+END FOR
 
-# Run the program
-if __name__ == "__main__":
-    main()
+End
+"""
+
+"""
+Word Occurrence Counter
+Estimated time: 15 minutes
+Actual time: [Record your actual time after completing]
+"""
+
+# Prompt the user to enter a string
+text = input("Text: ")
+
+# Convert the input to lowercase to make counting case-insensitive
+words = text.lower().split()
+
+# Count word occurrences using a dictionary
+word_to_count = {}
+for word in words:
+    if word in word_to_count:
+        word_to_count[word] += 1
+    else:
+        word_to_count[word] = 1
+
+# Find the length of the longest word for formatting
+max_word_length = max(len(word) for word in word_to_count)
+
+# Print the results sorted alphabetically by word
+for word in sorted(word_to_count):
+    print(f"{word:{max_word_length}} : {word_to_count[word]}")
