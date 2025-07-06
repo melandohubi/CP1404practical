@@ -1,41 +1,37 @@
-class ProgrammingLanguage:
-    """Represent a programming language."""
+"""IMPORT ProgrammingLanguage FROM programming_language
 
-    def __init__(self, name, typing, reflection, year):
-        """Initialise a ProgrammingLanguage instance."""
-        self.name = name
-        self.typing = typing
-        self.reflection = reflection
-        self.year = year
+CREATE python = ProgrammingLanguage("Python", "Dynamic", True, 1991)
+CREATE ruby = ProgrammingLanguage("Ruby", "Dynamic", True, 1995)
+CREATE visual_basic = ProgrammingLanguage("Visual Basic", "Static", False, 1991)
 
-    def is_dynamic(self):
-        """Return True if the programming language is dynamically typed."""
-        return self.typing.lower() == "dynamic"
+PRINT python  # uses __str__ method
 
-    def __str__(self):
-        """Return a string representation of the programming language."""
-        return f"{self.name}, {self.typing} Typing, Reflection={self.reflection}, First appeared in {self.year}"
+SET languages TO [python, ruby, visual_basic]
 
+PRINT "The dynamically typed languages are:"
 
-# Client code
-def main():
-    # Create instances of ProgrammingLanguage
-    python = ProgrammingLanguage("Python", "Dynamic", True, 1991)
-    ruby = ProgrammingLanguage("Ruby", "Dynamic", True, 1995)
-    visual_basic = ProgrammingLanguage("Visual Basic", "Static", False, 1991)
+FOR EACH language IN languages
+    IF language.is_dynamic() == True THEN
+        PRINT language.name
+    END IF
+END FOR
+"""
 
-    # Print the string representation of the Python object
-    print(python)
+from programming_language import ProgrammingLanguage
 
-    # Create a list of programming languages
-    languages = [python, ruby, visual_basic]
+# Create ProgrammingLanguage objects
+python = ProgrammingLanguage("Python", "Dynamic", True, 1991)
+ruby = ProgrammingLanguage("Ruby", "Dynamic", True, 1995)
+visual_basic = ProgrammingLanguage("Visual Basic", "Static", False, 1991)
 
-    # Print dynamically typed languages
-    print("\nThe dynamically typed languages are:")
-    for language in languages:
-        if language.is_dynamic():
-            print(language.name)
+# Print one language to check __str__ output
+print(python)
 
+# Create a list of these languages
+languages = [python, ruby, visual_basic]
 
-if __name__ == "__main__":
-    main()
+# Print dynamically typed languages using is_dynamic method
+print("The dynamically typed languages are:")
+for language in languages:
+    if language.is_dynamic():
+        print(language.name)
