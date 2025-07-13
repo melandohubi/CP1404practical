@@ -1,89 +1,182 @@
-import csv
+"""CLASS Guitar
+    FUNCTION __init__(name = "", year = 0, cost = 0)
+        SET self.name = name
+        SET self.year = year
+        SET self.cost = cost
+    END FUNCTION
 
+    FUNCTION __str__()
+        RETURN self.name + " (" + str(self.year) + ") : $" + format(self.cost, 2 decimal places)
+    END FUNCTION
+
+    FUNCTION get_age()
+        SET current_year = system's current year
+        RETURN current_year - self.year
+    END FUNCTION
+
+    FUNCTION is_vintage()
+        IF self.get_age() >= 50 THEN
+            RETURN True
+        ELSE
+            RETURN False
+        END IF
+    END FUNCTION
+
+    FUNCTION __lt__(other)
+        RETURN self.year < other.year
+    END FUNCTION
+END CLASS
+
+
+FUNCTION load_guitars(filename)
+    CREATE empty list guitars
+    OPEN file with name = filename FOR reading
+    FOR EACH line IN file
+        SPLIT line BY "," INTO name, year, cost
+        CONVERT year TO integer
+        CONVERT cost TO float
+        CREATE Guitar object with name, year, cost
+        ADD Guitar object TO guitars
+    END FOR
+    RETURN guitars
+END FUNCTION
+
+
+FUNCTION display_guitars(guitars)
+    PRINT "These are my guitars:"
+    FOR index FROM 0 TO length of guitars - 1
+        SET guitar = guitars[index]
+        IF guitar.is_vintage() == True THEN
+            SET vintage_label = "(vintage)"
+        ELSE
+            SET vintage_label = ""
+        END IF
+        PRINT "Guitar " + (index + 1) + ": " + str(guitar) + " " + vintage_label
+    END FOR
+END FUNCTION
+
+
+FUNCTION add_guitars()
+    CREATE empty list new_guitars
+    PRINT "Enter your new guitars. Leave name blank to finish."
+    WHILE True
+        PROMPT user FOR name
+        IF name == "" THEN
+            BREAK
+        END IF
+        PROMPT user FOR year AS integer
+        PROMPT user FOR cost AS float
+        CREATE Guitar object with name, year, cost
+        ADD Guitar object TO new_guitars
+    END WHILE
+    RETURN new_guitars
+END FUNCTION
+
+
+FUNCTION save_guitars(filename, guitars)
+    OPEN file with name = filename FOR writing
+    FOR EACH guitar IN guitars
+        WRITE guitar.name + "," + str(guitar.year) + "," + str(guitar.cost) TO file
+    END FOR
+END FUNCTION
+
+
+FUNCTION main()
+    SET FILENAME = "guitars.csv"
+    SET guitars = load_guitars(FILENAME)
+
+    CALL display_guitars(guitars)
+
+    SET new_guitars = add_guitars()
+    ADD all guitars from new_guitars TO guitars
+
+    SORT guitars using __lt__ method (by year)
+
+    PRINT "Sorted guitars:"
+    CALL display_guitars(guitars)
+
+    CALL save_guitars(FILENAME, guitars)
+
+    PRINT length of guitars + " guitars saved to " + FILENAME
+END FUNCTION
+
+
+CALL main()
+"""
+
+
+from datetime import date
 
 class Guitar:
-    """Represent a guitar object."""
-
     def __init__(self, name="", year=0, cost=0):
-        """Initialize a Guitar instance."""
         self.name = name
         self.year = year
         self.cost = cost
 
     def __str__(self):
-        """Return a string representation of the guitar."""
         return f"{self.name} ({self.year}) : ${self.cost:,.2f}"
 
     def get_age(self):
-        """Return the age of the guitar."""
-        current_year = 2024  # Assuming the current year is 2024
-        return current_year - self.year
+        return date.today().year - self.year
 
     def is_vintage(self):
-        """Return True if the guitar is vintage (50 years or older)."""
         return self.get_age() >= 50
 
     def __lt__(self, other):
-        """Define less than operator for sorting by year."""
         return self.year < other.year
 
 
-def read_guitars_from_csv(filename):
-    """Read guitars from a CSV file and return a list of Guitar objects."""
+def load_guitars(filename):
     guitars = []
-    with open(filename, 'r') as file:
-        reader = csv.reader(file)
-        for row in reader:
-            name = row[0]
-            year = int(row[1])
-            cost = float(row[2])
+    with open(filename, "r") as in_file:
+        for line in in_file:
+            parts = line.strip().split(',')
+            name, year, cost = parts[0], int(parts[1]), float(parts[2])
             guitars.append(Guitar(name, year, cost))
     return guitars
 
 
 def display_guitars(guitars):
-    """Display all guitars in the list."""
-    for guitar in guitars:
-        print(guitar)
+    print("These are my guitars:")
+    for i, guitar in enumerate(guitars, 1):
+        vintage_string = "(vintage)" if guitar.is_vintage() else ""
+        print(f"Guitar {i}: {guitar} {vintage_string}")
+
+
+def add_guitars():
+    new_guitars = []
+    print("Enter your new guitars. Leave name blank to finish.")
+    while True:
+        name = input("Name: ").strip()
+        if not name:
+            break
+        year = int(input("Year: "))
+        cost = float(input("Cost: "))
+        new_guitars.append(Guitar(name, year, cost))
+    return new_guitars
+
+
+def save_guitars(filename, guitars):
+    with open(filename, "w") as out_file:
+        for guitar in guitars:
+            out_file.write(f"{guitar.name},{guitar.year},{guitar.cost}\n")
 
 
 def main():
-    """Main function to run the program."""
-    filename = 'guitars.csv'
-
-    # Read existing guitars from CSV
-    guitars = read_guitars_from_csv(filename)
-
-    # Display current guitars
-    print("Current Guitars:")
+    FILENAME = "guitars.csv"
+    guitars = load_guitars(FILENAME)
     display_guitars(guitars)
 
-    # Sort guitars by year
+    new_guitars = add_guitars()
+    guitars.extend(new_guitars)
+
     guitars.sort()
-
-    # Display sorted guitars
-    print("\nSorted Guitars (by Year):")
+    print("\nSorted guitars:")
     display_guitars(guitars)
 
-    # User input for new guitars
-    while True:
-        name = input("\nEnter guitar name (or 'q' to quit): ")
-        if name.lower() == 'q':
-            break
-        year = int(input("Enter year: "))
-        cost = float(input("Enter cost: "))
-
-        new_guitar = Guitar(name, year, cost)
-        guitars.append(new_guitar)
-
-    # Write updated list back to CSV
-    with open(filename, 'w', newline='') as file:
-        writer = csv.writer(file)
-        for guitar in guitars:
-            writer.writerow([guitar.name, guitar.year, guitar.cost])
-
-    print("\nUpdated list of guitars has been saved.")
+    save_guitars(FILENAME, guitars)
+    print(f"\n{len(guitars)} guitars saved to {FILENAME}.")
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
