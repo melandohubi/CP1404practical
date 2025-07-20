@@ -1,36 +1,40 @@
-"""
-CP1404/CP5632 Practical
-Kivy GUI program to square a number
-Author: Melandovriertohubi, IT@JCU
-Started: 13/10/2015
+"""START
+
+FUNCTION handle_calculate(input_text)
+    TRY
+        SET num TO CONVERT input_text TO FLOAT
+        SET result TO num * num
+        DISPLAY result FORMATTED TO 2 DECIMAL PLACES ON output_label
+    CATCH ValueError
+        DISPLAY "Invalid input. Please enter a number." ON output_label
+    END TRY
+END FUNCTION
+
+FUNCTION build()
+    RETURN new BoxLayout
+END FUNCTION
+
+RUN SquareNumberApp
+
+END
 """
 
-from kivy.app import App  # Import the App class from Kivy to create the application
-from kivy.lang import Builder  # Import Builder to load Kivy language files
-from kivy.core.window import Window  # Import Window to control the application window size
-
-__author__ = 'Melandovriertohubi'  # Author information
+import kivy
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
 
 class SquareNumberApp(App):
-    """ SquareNumberApp is a Kivy App for squaring a number """
-
     def build(self):
-        """ Build the Kivy app from the KV file. """
-        Window.size = (400, 100)  # Set the size of the application window
-        self.title = "Square Number"  # Set the title of the application window
-        self.root = Builder.load_file('squaring.kv')  # Load the KV layout from the specified file
-        return self.root  # Return the root widget for the application
+        return BoxLayout()
 
-    def handle_calculate(self, value):
-        """
-        Handle calculation (could be button press or other call) and
-        output result to the label widget.
-        """
+    def handle_calculate(self, input_text):
+        """Handle the square calculation with error checking."""
         try:
-            result = float(value) ** 2  # Convert input to float and calculate the square
-            self.root.ids.output_label.text = str(result)  # Update the output label with the result
+            num = float(input_text)
+            result = num ** 2
+            self.root.ids.output_label.text = f"{result:.2f}"
         except ValueError:
-            pass  # Ignore errors in case of invalid input
+            self.root.ids.output_label.text = "Invalid input. Please enter a number."
 
-# Run the application
-SquareNumberApp().run()
+if __name__ == '__main__':
+    SquareNumberApp().run()
