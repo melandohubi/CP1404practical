@@ -1,30 +1,69 @@
-from kivy.app import App  # Import the App class from Kivy to create the application
-from kivy.lang import Builder  # Import Builder to load Kivy language files
-from kivy.uix.label import Label  # Import Label widget to display text
+"""START APPLICATION
+
+DEFINE CLASS DynamicLabelsApp INHERITS FROM App
+
+    FUNCTION __init__(self, optional arguments)
+        CALL superclass constructor with optional arguments
+        INITIALIZE self.names WITH list ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve']
+
+    FUNCTION build()
+        LOAD root layout FROM external .kv file ('dynamic_labels.kv')
+
+        ACCESS BoxLayout component WITH id 'main' FROM root layout
+        ASSIGN TO main_layout
+
+        FOR EACH name IN self.names DO
+            CREATE new Label WITH:
+                text = name
+                font_size = 20
+                color = (0, 0, 0, 1)         // RGBA: Black
+                size_hint_y = None          // Allow fixed vertical size
+                height = 40                 // Fixed height for spacing
+
+            ADD the Label widget TO main_layout
+
+        RETURN root layout
+
+END CLASS
+
+IF __name__ == "__main__" THEN
+    CREATE an instance of DynamicLabelsApp
+    CALL run() method ON the instance
+
+END APPLICATION
+"""
+
+# dynamic_labels.py
+from kivy.app import App
+from kivy.uix.label import Label
+from kivy.lang import Builder
+from kivy.uix.boxlayout import BoxLayout
 
 class DynamicLabelsApp(App):
-    """ Main program - Kivy app to demo dynamic label creation. """
-
     def __init__(self, **kwargs):
-        """ Construct main app. """
-        super().__init__(**kwargs)  # Initialize the parent App class
-        # Basic data (model) - list of names
-        self.names = ["Alice", "Bob", "Charlie", "Diana", "Eve"]  # List of names for label creation
+        super().__init__(**kwargs)
+        # Define the list of names (model)
+        self.names = ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve']
 
     def build(self):
-        """ Build the Kivy GUI. """
-        self.title = "Dynamic Labels"  # Set the title of the application window
-        self.root = Builder.load_file('dynamic_labels.kv')  # Load the KV layout from the specified file
-        self.create_labels()  # Call method to create labels based on the names list
-        return self.root  # Return the root widget for the application
+        # Load the layout from the .kv file
+        root = Builder.load_file('dynamic_labels.kv')
 
-    def create_labels(self):
-        """ Create labels from data and add them to the GUI. """
-        for name in self.names:  # Iterate through each name in the names list
-            # Create a label for each name
-            temp_label = Label(text=name)  # Create a Label widget with the name as text
-            # Add the label to the "entries_box" layout widget
-            self.root.ids.entries_box.add_widget(temp_label)  # Insert the label into the specified layout
+        # Access the inner BoxLayout by its id
+        main_layout = root.ids.main
 
-# Run the application
-DynamicLabelsApp().run()
+        # Dynamically create and add Labels for each name
+        for name in self.names:
+            label = Label(
+                text=name,
+                font_size=20,
+                color=(0, 0, 0, 1),  # Black text
+                size_hint_y=None,   # Allow fixed height
+                height=40           # Set height for consistent spacing
+            )
+            main_layout.add_widget(label)
+
+        return root
+
+if __name__ == '__main__':
+    DynamicLabelsApp().run()
