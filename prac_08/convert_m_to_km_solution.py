@@ -1,69 +1,83 @@
+"""DEFINE CONSTANT MILES_TO_KM = 1.60934
+
+DEFINE CLASS MilesToKmApp INHERITS FROM App
+    DECLARE km_result AS String INITIALIZED TO "0.0"
+
+    FUNCTION build()
+        RETURN a new BoxLayout UI
+
+    FUNCTION handle_up_down(delta)
+        SET current TO CALL get_current_miles()
+        SET new_value TO current + delta
+        SET text of input field with id 'input_miles' TO new_value formatted to 1 decimal place
+        CALL update_kilometers(new_value)
+
+    FUNCTION get_current_miles()
+        SET text TO value from TextInput field with id 'input_miles'
+        TRY
+            RETURN CONVERT text TO FLOAT
+        EXCEPT ValueError
+            RETURN 0.0
+
+    FUNCTION handle_text_input(instance, value)
+        CALL update_kilometers(value)
+
+    FUNCTION update_kilometers(miles)
+        TRY
+            SET miles TO CONVERT miles TO FLOAT
+            SET km TO miles * MILES_TO_KM
+            SET km_result TO STRING FORMAT of km with 4 decimal places
+        EXCEPT ValueError
+            SET km_result TO "0.0"
+
+END CLASS
+
+IF current file name IS EQUAL TO "__main__"
+    CREATE instance of MilesToKmApp
+    CALL run() on the instance
 """
-CP1404 Week 11 Workshop - GUI program to convert miles to kilometres
-Author: Melando Vrierto Hubi, IT@JCU
-Date: 06/10/2015
-"""
 
-from kivy.app import App  # Import the App class from the kivy library
-from kivy.lang import Builder  # Import Builder to load Kivy language files
-from kivy.properties import StringProperty  # Import StringProperty for dynamic text updates
+import kivy
+from kivy.app import App
+from kivy.properties import StringProperty
+from kivy.uix.boxlayout import BoxLayout
 
-__author__ = 'Melando Vrierto Hubi'  # Author information
-
-# Constant to convert miles to kilometers
+# Conversion factor from miles to kilometers
 MILES_TO_KM = 1.60934
 
-
-class MilesConverterApp(App):
-    """
-    MilesConverterApp is a Kivy application that provides a graphical user
-    interface for converting miles to kilometers.
-    """
-
-    output_text = StringProperty()  # Property to hold the output text
+class MilesToKmApp(App):
+    km_result = StringProperty("0.0")
 
     def build(self):
-        """
-        Build the Kivy app from the KV file.
-        Sets the title of the application and loads the UI from a .kv file.
-        """
-        self.title = "Convert Miles to Kilometres"  # Set the window title
-        self.root = Builder.load_file('convert_m_km_solution.kv')  # Load the KV layout
-        return self.root  # Return the root widget
+        return BoxLayout()
 
-    def handle_calculate(self):
-        """
-        Handle the calculation of kilometers from miles.
-        Updates the output label with the result.
-        """
-        value = self.get_validated_miles()  # Get the validated mile input
-        result = value * MILES_TO_KM  # Convert miles to kilometers
-        self.root.ids.output_label.text = f"{result:.3f}"  # Format and display result
+    def handle_up_down(self, delta):
+        """Handle incrementing/decrementing the miles value."""
+        current = self.get_current_miles()
+        new_value = current + delta
+        self.root.ids.input_miles.text = f"{new_value:.1f}"
+        self.update_kilometers(new_value)
 
-    def handle_increment(self, change):
-        """
-        Handle the increment or decrement of miles via button press.
-        Updates the input field and recalculates the result.
-
-        :param change: Amount to change the mile input (positive or negative)
-        """
-        value = self.get_validated_miles() + change  # Update the mile value
-        self.root.ids.input_miles.text = str(value)  # Update the input field
-        self.handle_calculate()  # Recalculate the kilometers
-
-    def get_validated_miles(self):
-        """
-        Get the miles input from the text entry widget and convert it to float.
-        Returns 0.0 if the input is invalid.
-
-        :return: float version of input if valid, otherwise 0.0
-        """
+    def get_current_miles(self):
+        """Get the current miles value from the TextInput, default to 0.0."""
+        text = self.root.ids.input_miles.text
         try:
-            value = float(self.root.ids.input_miles.text)  # Attempt to convert input to float
-            return value  # Return the valid float value
+            return float(text)
         except ValueError:
-            return 0.0  # Return 0.0 if conversion fails
+            return 0.0
 
+    def handle_text_input(self, instance, value):
+        """Handle changes to the TextInput value."""
+        self.update_kilometers(value)
 
-# Run the application
-MilesConverterApp().run()
+    def update_kilometers(self, miles):
+        """Calculate and update the kilometers result."""
+        try:
+            miles = float(miles)
+            km = miles * MILES_TO_KM
+            self.km_result = f"{km:.4f}"
+        except ValueError:
+            self.km_result = "0.0"
+
+if __name__ == '__main__':
+    MilesToKmApp().run()
