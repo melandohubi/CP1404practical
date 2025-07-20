@@ -1,23 +1,27 @@
+#:kivy 2.0.0
+
 BoxLayout:
-    orientation: 'horizontal'  # Main layout orientation is horizontal
+    orientation: 'vertical'
+    spacing: 10
+    padding: [10, 10, 10, 10]
 
-    TextInput:  # Input field for user to enter a number
-        id: input_number  # Unique ID for accessing this widget in the Python code
-        text: '7'  # Default text value in the input field
-        font_size: 48  # Font size for the input text
-        multiline: False  # Input field is single-line only
+    BoxLayout:
+        orientation: 'horizontal'
+        spacing: 10
 
-    Button:  # Button to trigger the square calculation
-        text: 'Square'  # Label for the button
-        on_press: app.handle_calculate(input_number.text)  # Call the calculation function with input value
+        TextInput:
+            id: input_number
+            text: ''
+            hint_text: 'Enter a number'
 
-    Label:  # Label to display the output result
-        id: output_label  # Unique ID for accessing this widget in the Python code
-        font_size: 48  # Font size for the output label
-        color: (1, 0, 0.63, 1)  # Set text color to pink (RGBA format)
+        Button:
+            text: 'Square'
+            on_press: app.handle_calculate(input_number.text)
 
-BoxLayout:  # Additional layout for instructions
-    orientation: 'horizontal'  # Set to horizontal orientation
+        Label:
+            id: output_label
+            text: ''
+            color: (1, 0, 1, 1)  # Pink text color (RGBA)
 
-    Label:  # Label to provide instructions to the user
-        text: 'Enter a number and press "Square"'  # Instruction text
+    Label:
+        text: 'Enter a number and press "Square"'
