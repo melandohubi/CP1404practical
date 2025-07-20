@@ -1,19 +1,24 @@
+#:kivy 2.0.0
+
 BoxLayout:
-    orientation: 'vertical'  # Main layout orientation set to vertical
+    orientation: 'vertical'
+    spacing: 10
+    padding: [10, 10, 10, 10]
 
-    Button:  # Button for clearing the input
-        text: 'Clear'  # Label for the button
-        on_press: app.handle_clear()  # Call the clear function when pressed
+    Button:
+        text: 'Clear'
+        on_press: app.handle_clear()
 
-    TextInput:  # Text input for user to enter their name
-        id: input_name  # Unique ID for accessing this widget in the Python code
-        text: ''  # Default text value is empty
+    TextInput:
+        id: input_name
+        text: ''
+        hint_text: 'Enter your name'
 
-    Button:  # Button to trigger the greeting
-        text: 'Greet'  # Label for the button
-        on_press: app.handle_greet()  # Call the greet function when pressed
+    Button:
+        text: 'Greet'
+        on_press: app.handle_greet()
 
-    Label:  # Label to display the output message
-        id: output_label  # Unique ID for accessing this widget in the Python code
-        text: 'Enter your name'  # Default text prompting user action
-        color: (1, 1, 0, 1)  # Set text color to yellow (RGBA format)
+    Label:
+        id: output_label
+        text: ''
+        color: (1, 1, 0, 1)  # Yellow text color (RGBA)
