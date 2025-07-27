@@ -1,124 +1,160 @@
-class Taxi:
-    def __init__(self, name, fuel):
-        """Initializes a Taxi instance with a name and fuel amount.
+"""BEGIN
 
-        Args:
-            name (str): The name of the taxi.
-            fuel (float): The amount of fuel in the taxi.
-        """
-        self.name = name
-        self.fuel = fuel
-        self.odometer = 0  # Tracks the distance driven
-        self.current_fare = 1.23  # Example fare per km
+    PRINT "Let's drive!"
 
-    def drive(self, distance):
-        """Drives the taxi a certain distance, adjusting for fuel limits.
+    // Create list of taxis
+    taxis ← [ NEW Taxi("Prius", 100),
+              NEW SilverServiceTaxi("Limo", 100, 2),
+              NEW SilverServiceTaxi("Hummer", 200, 4) ]
 
-        Args:
-            distance (float): The distance to drive.
+    bill ← 0.0
+    current_taxi ← None
 
-        Returns:
-            float: The cost of the trip based on distance driven.
-        """
-        if distance > self.fuel:
-            distance = self.fuel  # Drive only as far as the fuel allows
-        self.odometer += distance  # Update the odometer
-        self.fuel -= distance  # Decrease the fuel by the distance driven
-        return distance * self.current_fare  # Calculate and return the fare
+    REPEAT
+        PRINT "q)uit, c)hoose taxi, d)rive"
+        choice ← INPUT(">>> ")
+        choice ← TO_LOWERCASE(choice)
 
-    def __str__(self):
-        """Returns a string representation of the taxi's current state.
+        IF choice == 'q' THEN
+            BREAK LOOP
 
-        Returns:
-            str: A string describing the taxi's name, fuel, odometer, and fare.
-        """
-        return f"{self.name}, fuel={self.fuel}, odometer={self.odometer}, {self.current_fare}/km"
+        ELSE IF choice == 'c' THEN
+            // Show taxis
+            PRINT "Taxis available:"
+            FOR i FROM 0 TO LENGTH(taxis) - 1 DO
+                PRINT i, "-", taxis[i].ToString()
+            END FOR
+
+            taxi_choice_input ← INPUT("Choose taxi: ")
+            TRY
+                taxi_choice ← TO_INTEGER(taxi_choice_input)
+                IF taxi_choice >= 0 AND taxi_choice < LENGTH(taxis) THEN
+                    CALL taxis[taxi_choice].start_fare()
+                    current_taxi ← taxis[taxi_choice]
+                ELSE
+                    PRINT "Invalid taxi choice"
+                END IF
+            CATCH invalid input
+                PRINT "Invalid taxi choice"
+            END TRY
+
+        ELSE IF choice == 'd' THEN
+            IF current_taxi == None THEN
+                PRINT "You need to choose a taxi before you can drive"
+                PRINT "Bill to date: $" + FORMAT(bill, 2)
+            ELSE
+                ASK_DISTANCE:
+                REPEAT
+                    distance_input ← INPUT("Drive how far? ")
+                    TRY
+                        distance ← TO_FLOAT(distance_input)
+                        IF distance < 0 THEN
+                            PRINT "Distance must be >= 0"
+                            CONTINUE REPEAT
+                        END IF
+                        CALL current_taxi.drive(distance)
+                        trip_cost ← current_taxi.get_fare()
+                        PRINT "Your", current_taxi.name, "trip cost you $", FORMAT(trip_cost, 2)
+                        bill ← bill + trip_cost
+                        PRINT "Bill to date: $", FORMAT(bill, 2)
+                        BREAK REPEAT
+                    CATCH invalid input
+                        PRINT "Invalid input; enter a number."
+                    END TRY
+                END REPEAT
+
+        ELSE
+            PRINT "Invalid option"
+            PRINT "Bill to date: $", FORMAT(bill, 2)
+        END IF
+
+    END REPEAT
+
+    PRINT "Total trip cost: $", FORMAT(bill, 2)
+    PRINT "Taxis are now:"
+    FOR i FROM 0 TO LENGTH(taxis) - 1 DO
+        PRINT i, "-", taxis[i].ToString()
+    END FOR
+
+END
+"""
 
 
-class SilverServiceTaxi(Taxi):
-    def __init__(self, name, fuel, flagfall):
-        """Initializes a SilverServiceTaxi instance with a name, fuel, and flagfall.
+"""Taxi Simulator - Polymorphic Taxi Fare Calculation."""
 
-        Args:
-            name (str): The name of the taxi.
-            fuel (float): The amount of fuel in the taxi.
-            flagfall (float): The initial charge for the taxi service.
-        """
-        super().__init__(name, fuel)  # Call the parent class constructor
-        self.flagfall = flagfall  # Set the flagfall charge
-        self.current_fare = 2.46  # Example fare per km for Silver Service
+from taxi import Taxi
+from silver_service_taxi import SilverServiceTaxi
 
-    def drive(self, distance):
-        """Drives the taxi a certain distance and adds the flagfall to the cost.
-
-        Args:
-            distance (float): The distance to drive.
-
-        Returns:
-            float: The total cost of the trip including flagfall.
-        """
-        cost = super().drive(distance)  # Get the cost from the parent class
-        return cost + self.flagfall  # Add flagfall to the cost
-
-    def __str__(self):
-        """Returns a string representation of the SilverServiceTaxi's current state.
-
-        Returns:
-            str: A string describing the taxi's name, fuel, odometer, fare, and flagfall.
-        """
-        return f"{self.name}, fuel={self.fuel}, odometer={self.odometer}, {self.current_fare}/km plus flagfall of {self.flagfall}"
-
+MENU = "q)uit, c)hoose taxi, d)rive"
 
 def main():
-    """Main function to run the taxi simulation.
-
-    It allows users to choose a taxi, drive it a certain distance, and calculates the total bill.
-    """
-    # Create a list of available taxis
+    print("Let's drive!")
     taxis = [
         Taxi("Prius", 100),
-        SilverServiceTaxi("Limo", 100, 4.50),
-        SilverServiceTaxi("Hummer", 200, 4.50)
+        SilverServiceTaxi("Limo", 100, 2),
+        SilverServiceTaxi("Hummer", 200, 4)
     ]
-
-    current_taxi = None  # Variable to store the currently selected taxi
-    total_bill = 0  # Variable to track the total bill
+    bill = 0.0
+    current_taxi = None
 
     while True:
-        print("Let's drive!")
-        print("q)uit, c)hoose taxi, d)rive")
-        choice = input(">>> ").lower()  # Get user input
+        print(MENU)
+        choice = input(">>> ").lower()
 
         if choice == 'q':
-            # If the user chooses to quit, display the total bill and available taxis
-            print(f"Total trip cost: ${total_bill:.2f}")
-            print("Taxis are now:")
-            for i, taxi in enumerate(taxis):
-                print(f"{i} - {taxi}")
             break
         elif choice == 'c':
-            # If the user chooses to select a taxi, display available taxis
-            print("Taxis available:")
-            for i, taxi in enumerate(taxis):
-                print(f"{i} - {taxi}")
-            taxi_choice = int(input("Choose taxi: "))  # Get taxi choice from user
-            if 0 <= taxi_choice < len(taxis):
-                current_taxi = taxis[taxi_choice]  # Set the current taxi
-            else:
-                print("Invalid taxi choice")  # Handle invalid choice
+            current_taxi = choose_taxi(taxis)
         elif choice == 'd':
-            # If the user chooses to drive, check if a taxi is selected
             if current_taxi is None:
                 print("You need to choose a taxi before you can drive")
             else:
-                distance = int(input("Drive how far? "))  # Get distance to drive
-                trip_cost = current_taxi.drive(distance)  # Calculate trip cost
-                total_bill += trip_cost  # Update total bill
+                trip_cost = drive_taxi(current_taxi)
+                bill += trip_cost
                 print(f"Your {current_taxi.name} trip cost you ${trip_cost:.2f}")
-                print(f"Bill to date: ${total_bill:.2f}")
+            print(f"Bill to date: ${bill:.2f}")
         else:
-            print("Invalid option")  # Handle invalid option
+            print("Invalid option")
+            print(f"Bill to date: ${bill:.2f}")
 
+    # End of session
+    print(f"Total trip cost: ${bill:.2f}")
+    print("Taxis are now:")
+    display_taxis(taxis)
+
+def choose_taxi(taxis):
+    print("Taxis available:")
+    for idx, taxi in enumerate(taxis):
+        print(f"{idx} - {taxi}")
+    try:
+        taxi_choice = int(input("Choose taxi: "))
+        if 0 <= taxi_choice < len(taxis):
+            # Restart meter for the selected taxi
+            taxis[taxi_choice].start_fare()
+            return taxis[taxi_choice]
+        else:
+            print("Invalid taxi choice")
+            return None
+    except (ValueError, IndexError):
+        print("Invalid taxi choice")
+        return None
+
+def drive_taxi(taxi):
+    while True:
+        try:
+            distance = float(input("Drive how far? "))
+            if distance < 0:
+                print("Distance must be >= 0")
+                continue
+            taxi.drive(distance)
+            fare = taxi.get_fare()
+            return fare
+        except ValueError:
+            print("Invalid input; enter a number.")
+
+def display_taxis(taxis):
+    for idx, taxi in enumerate(taxis):
+        print(f"{idx} - {taxi}")
 
 if __name__ == "__main__":
-    main()  # Run the main function when the script is executed
+    main()
