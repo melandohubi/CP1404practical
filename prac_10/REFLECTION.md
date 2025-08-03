@@ -1,51 +1,24 @@
-CP1404 Practical Reflection
-Estimates
 How was your estimate accuracy usually?
-
-My estimate accuracy varied throughout the course, often depending on the complexity of the task. In the earlier weeks, particularly with simpler tasks like functions and lists, my estimates were fairly close. However, as we progressed to more complex topics like OOP and APIs, I found my estimates to be less accurate due to unforeseen challenges and intricacies in the code.
-
+My estimate accuracy varied depending on the complexity of the task. For simple exercises, I was usually quite accurate, but for more complex problems involving unfamiliar libraries or recursion, my estimates were less precise.
 How did your estimate accuracy improve or change during the course of the subject?
-
-Over time, I became more adept at breaking down tasks into smaller components, which improved my estimation skills. By week 10, I had developed a better understanding of how long specific coding tasks would take, especially after gaining experience with APIs and GUI programming. This experience helped me refine my approach to estimating time and effort more realistically.
-
+As the course progressed, I became better at breaking down tasks into smaller steps, which improved my estimates. Gaining more experience with Python concepts and libraries helped me anticipate potential challenges and manage time more realistically.
 What did you learn from doing these estimates?
-
-I learned that making accurate estimates requires not only an understanding of the task at hand but also an awareness of my own coding speed and problem-solving abilities. Additionally, I discovered the importance of factoring in potential obstacles and debugging time, which can significantly affect the overall timeline.
-
+I learned the importance of planning and reflecting on my coding process. Making estimates forced me to think ahead about the steps involved, leading to better time management and prioritization during coding.
 Code Reviews
-
 What have you learned from being reviewed by other people?
-
-Being reviewed by others highlighted areas where I could improve my coding practices and emphasized the importance of writing clear, maintainable code. Feedback from peers often provided new perspectives on problem-solving and introduced me to alternative approaches that I hadn't considered.
-
+Being reviewed helped me see different ways to write clearer and more efficient code. Feedback often pointed out edge cases I missed or suggestions for better naming and structure that improved readability.
 What have you learned from doing code reviews of other people?
-
-Conducting code reviews taught me to critically evaluate code for clarity, efficiency, and adherence to best practices. It reinforced my understanding of coding standards and helped me develop a more analytical mindset when approaching programming tasks. I also learned how to provide constructive feedback that encourages improvement rather than discouragement.
-
+Reviewing others’ code improved my eye for detail and taught me how to provide constructive feedback. It also helped me reinforce best practices by comparing different coding styles and solutions.
 Good Code Review 1
-
-PR #1 - Example Review
-
+Provide a link here to a PR where you reviewed code
 Explanation
-
-In this review, I focused on providing specific feedback regarding code readability and suggested improvements for function naming conventions. This helped the author understand how to make their code clearer for future maintainers.
-
+In this review, I focused on improving code readability by suggesting more descriptive variable names and adding comments to clarify a recursive function’s base case.
 Good Code Review 2
-
-PR #2 - Example Review
-
+Provide another PR link here
 Explanation
-
-This review emphasised best practices in error handling and encouraged the use of exceptions in a more structured way. By highlighting these aspects, I aimed to improve the robustness of the code while also fostering a discussion about error management strategies.
-
+This review identified potential bugs related to exception handling and recommended adding assertions and edge case testing, which helped make the code more robust.
 Practicals
-
 Regarding the practical tasks overall, what would you change if you were in charge of the subject?
-
-If I were in charge of the subject, I would incorporate more collaborative projects that require teamwork. This could enhance peer learning and provide students with experience working in environments similar to real-world software development settings. Additionally, introducing more frequent checkpoints or mini-assessments could help students gauge their understanding throughout the course.
-
+I would include more guided exercises on debugging and testing early in the course, as these are crucial skills that help reduce frustration when working with APIs and recursion later.
 What did you do really well for practicals in this subject?
-
-I excelled in actively participating in discussions during practical sessions and consistently sought feedback on my work. My proactive approach allowed me to clarify doubts early on and adapt my learning strategies effectively. Furthermore, I maintained a strong focus on writing clean and organized code, which facilitated easier debugging and collaboration with peers.
-
-
+I consistently wrote clear, well-documented code and thoroughly tested my solutions with asserts and doctests. I actively sought feedback through code reviews, which helped me improve and learn new approaches.
